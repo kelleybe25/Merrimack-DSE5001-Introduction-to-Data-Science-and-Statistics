@@ -1,0 +1,415 @@
+Homework Lab 1
+Ben Kelley
+2024-01-21
+Step 1: Using R as a Calculator
+2 + 2
+## [1] 4
+3 + 3
+## [1] 6
+10 + 17 + 15
+## [1] 42
+5 - 3
+## [1] 2
+8 - 1
+## [1] 7
+5 * 5
+## [1] 25
+2 * 4
+## [1] 8
+1 / 2
+## [1] 0.5
+2 / 7
+## [1] 0.2857143
+2 ˆ 8
+## [1] 256
+10 ˆ 3
+## [1] 1000
+2 ** 8
+## [1] 256
+10 ** 3
+## [1] 1000
+1
+2 + 3 - 6 / 2
+## [1] 2
+10 * 2 - 3 / 5 ˆ 2
+## [1] 19.88
+2 / (3 * 2)
+## [1] 0.3333333
+(2 / 3) * 2
+## [1] 1.333333
+-2 * 3
+## [1] -6
+10 ˆ -3
+## [1] 0.001
+2+3
+## [1] 5
+2+ 3
+## [1] 5
+2 + 3
+## [1] 5
+Step 2: Variables and Assignment
+(12 / 3.5) ˆ 2 + (1 / 2.5) ˆ 3 + (1 + 2 + 3) ˆ 0.33
+## [1] 13.6254
+x <- (12 / 3.5) ˆ 2 + (1 / 2.5) ˆ 3 + (1 + 2 + 3) ˆ 0.33
+x
+## [1] 13.6254
+x ˆ 2
+## [1] 185.6516
+x * 3.6
+## [1] 49.05145
+y <- x ˆ 2
+y <- x * 3.6
+x <- 42
+# acceptable naming conventions
+x123 <- 42
+.x <- 42
+x_y_z <- 42
+xXx_123 <- 42
+# unacceptable naming conventions
+2
+# _x <- 42
+# .2x <- 42
+# x-y-z <- 42
+age <- 29
+income <- 38575.65
+is_married <- TRUE
+years_married <- 7
+Step 3: Vectors
+primes <- c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29)
+primes + 1
+## [1] 3 4 6 8 12 14 18 20 24 30
+primes / 2
+## [1] 1.0 1.5 2.5 3.5 5.5 6.5 8.5 9.5 11.5 14.5
+primes ˆ 2
+## [1] 4 9 25 49 121 169 289 361 529 841
+primes[1]
+## [1] 2
+primes[5]
+## [1] 11
+primes[c(7, 5, 3)]
+## [1] 17 11 5
+primes[2:5]
+## [1] 3 5 7 11
+primes[-1]
+## [1] 3 5 7 11 13 17 19 23 29
+primes[-2]
+## [1] 2 5 7 11 13 17 19 23 29
+primes[-c(7, 5, 3)]
+## [1] 2 3 7 13 19 23 29
+x <- 42
+x[1]
+## [1] 42
+class(primes)
+## [1] "numeric"
+3
+nation <- c('ireland', 'england', 'scotland', 'wales', 'france', 'italy')
+class(nation)
+## [1] "character"
+nation <- c("ireland", 'england', "scotland", 'wales', 'france', 'italy')
+nation[1]
+## [1] "ireland"
+nation[-2]
+## [1] "ireland" "scotland" "wales" "france" "italy"
+nation[4:6]
+## [1] "wales" "france" "italy"
+# does not work
+# nation + 2
+# nation * 2
+is_male <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
+is_male <- c(T, F, T, T, F)
+class(is_male)
+## [1] "logical"
+is_male[2]
+## [1] FALSE
+is_male[c(1, 2)]
+## [1] TRUE FALSE
+is_male * 2
+## [1] 2 0 2 2 0
+is_male - 2
+## [1] -1 -2 -1 -1 -2
+result <- is_male * 2
+class(result)
+## [1] "numeric"
+TRUE & FALSE
+## [1] FALSE
+TRUE & TRUE
+## [1] TRUE
+c(T, F, T) & c(T, T, F)
+## [1] TRUE FALSE FALSE
+TRUE | FALSE
+## [1] TRUE
+4
+TRUE | TRUE
+## [1] TRUE
+!TRUE
+## [1] FALSE
+!FALSE
+## [1] TRUE
+(TRUE | !TRUE) & FALSE
+## [1] FALSE
+(TRUE | !TRUE) & !FALSE
+## [1] TRUE
+primes == 7
+## [1] FALSE FALSE FALSE TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+12 == (6 * 2)
+## [1] TRUE
+12 != (6 * 2)
+## [1] FALSE
+primes != 3
+## [1] TRUE FALSE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+primes < 5
+## [1] TRUE TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+primes > 8
+## [1] FALSE FALSE FALSE FALSE TRUE TRUE TRUE TRUE TRUE TRUE
+primes <= 7
+## [1] TRUE TRUE TRUE TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+primes >= 3
+## [1] FALSE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+nation == 'england'
+## [1] FALSE TRUE FALSE FALSE FALSE FALSE
+nation != 'england'
+## [1] TRUE FALSE TRUE TRUE TRUE TRUE
+nation >= 'italy'
+## [1] FALSE FALSE TRUE TRUE FALSE TRUE
+c(TRUE, FALSE, 3, 2, -1, TRUE)
+## [1] 1 0 3 2 -1 1
+5
+c(2.75, 11.3, TRUE, FALSE, 'dog', 'cat')
+## [1] "2.75" "11.3" "TRUE" "FALSE" "dog" "cat"
+c(primes, primesˆ2, primesˆ3)
+## [1] 2 3 5 7 11 13 17 19 23 29 4 9
+## [13] 25 49 121 169 289 361 529 841 8 27 125 343
+## [25] 1331 2197 4913 6859 12167 24389
+ages <- c(bob = 27, bill = 19, charles = 24)
+ages
+## bob bill charles
+## 27 19 24
+ages['bob']
+## bob
+## 27
+ages['bill']
+## bill
+## 19
+ages <- c(27, 19, 24)
+names(ages) <- c('bob', 'bill', 'charles')
+ages
+## bob bill charles
+## 27 19 24
+x <- c(1, 2, NA, 4, 5)
+x
+## [1] 1 2 NA 4 5
+y <- c('be', NA, 'afeard')
+y
+## [1] "be" NA "afeard"
+c(1, 2, NA, 4, 5)
+## [1] 1 2 NA 4 5
+c(1, 2, 'NA', 4, 5)
+## [1] "1" "2" "NA" "4" "5"
+Step 4: Data Frames
+data_df <- data.frame(name = c('billy', 'joe', 'bob'), age = c(21, 29, 23))
+data_df
+## name age
+## 1 billy 21
+## 2 joe 29
+## 3 bob 23
+6
+data_df[3, 2]
+## [1] 23
+data_df[c(1, 3), 2]
+## [1] 21 23
+data_df[3, ]
+## name age
+## 3 bob 23
+data_df[,2]
+## [1] 21 29 23
+data_df$age
+## [1] 21 29 23
+data_df[['age']]
+## [1] 21 29 23
+data_df['age']
+## age
+## 1 21
+## 2 29
+## 3 23
+Step 5: Other Data Structures
+example_list <- list(A = TRUE, B = c(1, 2, 3), C = c('cat', 'dog'))
+example_list
+## $A
+## [1] TRUE
+##
+## $B
+## [1] 1 2 3
+##
+## $C
+## [1] "cat" "dog"
+example_list[['B']]
+## [1] 1 2 3
+example_list$B
+## [1] 1 2 3
+example_list[[1]]
+## [1] TRUE
+matrix(c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29), nrow=2, ncol=5)
+7
+## [,1] [,2] [,3] [,4] [,5]
+## [1,] 2 5 11 17 23
+## [2,] 3 7 13 19 29
+matrix(c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29), byrow = T, nrow=2, ncol=5)
+## [,1] [,2] [,3] [,4] [,5]
+## [1,] 2 3 5 7 11
+## [2,] 13 17 19 23 29
+rbind(c(1, 2), c(3, 4))
+## [,1] [,2]
+## [1,] 1 2
+## [2,] 3 4
+cbind(c(1, 2), c(3, 4))
+## [,1] [,2]
+## [1,] 1 3
+## [2,] 2 4
+primes_m <- matrix(c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29), byrow = T, nrow=2, ncol=5)
+primes_m
+## [,1] [,2] [,3] [,4] [,5]
+## [1,] 2 3 5 7 11
+## [2,] 13 17 19 23 29
+primes_m[1, 3] # row 1, column 3
+## [1] 5
+primes_m[2, ] # row 2, all cols
+## [1] 13 17 19 23 29
+primes_m[, 3] # column 3, all rows
+## [1] 5 19
+example_array <- array(c(1, 2, 3, 4, 5, 6, 7, 8), dim=c(2,2,2))
+example_array
+## , , 1
+##
+## [,1] [,2]
+## [1,] 1 3
+## [2,] 2 4
+##
+## , , 2
+##
+## [,1] [,2]
+## [1,] 5 7
+## [2,] 6 8
+example_array[1,2,]
+## [1] 3 7
+8
+example_array[,1,]
+## [,1] [,2]
+## [1,] 1 5
+## [2,] 2 6
+Step 6: Functions
+length(primes)
+## [1] 10
+sum(primes)
+## [1] 129
+mean(primes)
+## [1] 12.9
+median(primes)
+## [1] 12
+sd(primes)
+## [1] 9.024042
+var(primes)
+## [1] 81.43333
+round(sqrt(mean(primes)))
+## [1] 4
+mean(primes, trim=0.1)
+## [1] 12.25
+# ?mean
+# help("mean")
+my_mean <- function(x){ sum(x)/length(x) }
+my_mean(primes)
+## [1] 12.9
+Step 7: Scripts
+composites <- c(4, 6, 8, 9, 10, 12, 14, 15, 16, 18)
+composites_plus_one <- composites + 1
+composites_minus_one <- composites - 1
+Df <- data.frame(name = c('jane', 'joe', 'billy', 'bob', 'jim'),
+age = c(23, 27, 24, 32, 19),
+sex = c('female', 'male', 'male', 'male', 'male'),
+occupation = c('doctor', 'tinker', 'tailor', 'soldier', 'spy')
+)
+9
+Df <- data.frame(name = c('jane', 'joe', 'billy', 'bob', 'jim'),
+age = c(23, 27, 24, 32, 19),
+sex = c('female','male', 'male', 'male', 'male'),
+occupation = c('doctor', 'tinker', 'tailor', 'soldier', 'spy')
+)
+# Create vectors ----------------------------------------------------------
+primes <- c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29)
+composites <- c(4, 6, 8, 9, 10, 12, 14, 15, 16, 18)
+# Some calculations -------------------------------------------------------
+primes_plus_one <- primes + 1
+composites_squared <- composites ˆ 2
+# Some more calculations --------------------------------------------------
+primes_lt_20 <- primes[primes < 20] # prime numbers less than 20
+Step 8: Installing and loading packages
+# I have already installed these packages so I am leaving them as comments
+# install.packages("dplyr")
+# install.packages(c("dplyr", "tidyr", "ggplot2"))
+# install.packages('tidyverse')
+library("tidyverse")
+## Warning: package 'stringr' was built under R version 4.3.2
+## Warning: package 'forcats' was built under R version 4.3.2
+## Warning: package 'lubridate' was built under R version 4.3.2
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr 1.1.3 v readr 2.1.4
+## v forcats 1.0.0 v stringr 1.5.0
+## v ggplot2 3.4.4 v tibble 3.2.1
+## v lubridate 1.9.3 v tidyr 1.3.0
+## v purrr 1.0.2
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag() masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+library("dplyr")
+search()
+## [1] ".GlobalEnv" "package:lubridate" "package:forcats"
+## [4] "package:stringr" "package:dplyr" "package:purrr"
+## [7] "package:readr" "package:tidyr" "package:tibble"
+## [10] "package:ggplot2" "package:tidyverse" "package:stats"
+10
+## [13] "package:graphics" "package:grDevices" "package:utils"
+## [16] "package:datasets" "package:methods" "Autoloads"
+## [19] "package:base"
+Step 9: Reading in and viewing data
+library(readr)
+weight_df <- read_csv("weight.csv")
+## Rows: 6068 Columns: 8
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): gender
+## dbl (7): subjectid, height, height_selfreport, weight, weight_selfreport, ag...
+##
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+View(weight_df)
+options(tibble.print_max = 15, tibble.print_min = 15)
+options(tibble.print_max = 15, tibble.print_min = 5)
+options(tibble.print_max = Inf)
+# print(weight_df, n = Inf) left this as a comment to avoid viewing 100+ pages in the pdf
+options(tibble.width = Inf)
+options(tibble.print_max = NULL, tibble.print_min = NULL, tibble.width = NULL)
+options(pillar.sigfig = 5)
+Step 10: Working directory, RStudio projects, and clean workspaces
+getwd()
+## [1] "C:/Users/bkell/Documents/Data Science Masters Program/DSE5001"
+data_df <- read_csv("C:/Users/bkell/Documents/Data Science Masters Program/DSE5001/weight.csv")
+## Rows: 6068 Columns: 8
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): gender
+## dbl (7): subjectid, height, height_selfreport, weight, weight_selfreport, ag...
+##
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+data_1_df <- read_csv("weight.csv")
+## Rows: 6068 Columns: 8
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): gender
+## dbl (7): subjectid, height, height_selfreport, weight, weight_selfreport, ag...
+##
+## i Use `spec()` to retrieve the full column specification for this data.
+11
+## i Specify the column types or set `sho
+w_col_types = FALSE` to quiet this message.
+write_csv(data_df, 'my_new_data.csv')
