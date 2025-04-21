@@ -1,0 +1,2086 @@
+Homework Lab 2
+Ben Kelley
+2024-01-28
+library(tidyverse)
+## Warning: package 'stringr' was built under R version 4.3.2
+## Warning: package 'forcats' was built under R version 4.3.2
+## Warning: package 'lubridate' was built under R version 4.3.2
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr 1.1.3 v readr 2.1.4
+## v forcats 1.0.0 v stringr 1.5.0
+## v ggplot2 3.4.4 v tibble 3.2.1
+## v lubridate 1.9.3 v tidyr 1.3.0
+## v purrr 1.0.2
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag() masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+library(readr)
+library(dplyr)
+library(plyr)
+## Warning: package 'plyr' was built under R version 4.3.2
+## ------------------------------------------------------------------------------
+## You have loaded plyr after dplyr - this is likely to cause problems.
+## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+## library(plyr); library(dplyr)
+## ------------------------------------------------------------------------------
+##
+## Attaching package: 'plyr'
+##
+## The following objects are masked from 'package:dplyr':
+##
+## arrange, count, desc, failwith, id, mutate, rename, summarise,
+## summarize
+##
+## The following object is masked from 'package:purrr':
+##
+## compact
+library(stringr)
+weight_df <- read_csv("C:/Users/bkell/Documents/Data Science Masters Program/DSE5001/weight.csv")
+## Rows: 6068 Columns: 8
+1
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): gender
+## dbl (7): subjectid, height, height_selfreport, weight, weight_selfreport, ag...
+##
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+### Chapter 3
+### Selecting Variables
+glimpse(weight_df)
+## Rows: 6,068
+## Columns: 8
+## $ subjectid <dbl> 10027, 10032, 10033, 10092, 10093, 10115, 10117, 102~
+## $ gender <chr> "Male", "Male", "Male", "Male", "Male", "Male", "Mal~
+## $ height <dbl> 177.6, 170.2, 173.5, 165.5, 191.4, 172.0, 181.0, 185~
+## $ height_selfreport <dbl> 180.34, 172.72, 172.72, 167.64, 195.58, 175.26, 182.~
+## $ weight <dbl> 81.5, 72.6, 92.9, 79.4, 94.6, 80.2, 116.2, 95.4, 99.~
+## $ weight_selfreport <dbl> 81.66969, 72.59528, 93.01270, 79.40109, 96.64247, 79~
+## $ age <dbl> 41, 35, 42, 31, 21, 39, 32, 23, 36, 23, 32, 28, 36, ~
+## $ race <dbl> 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1~
+select(weight_df, subjectid, gender, height, weight)
+## # A tibble: 6,068 x 4
+## subjectid gender height weight
+## <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 178. 81.5
+## 2 10032 Male 170. 72.6
+## 3 10033 Male 174. 92.9
+## 4 10092 Male 166. 79.4
+## 5 10093 Male 191. 94.6
+## 6 10115 Male 172 80.2
+## 7 10117 Male 181 116.
+## 8 10237 Male 185 95.4
+## 9 10242 Male 178. 99.5
+## 10 10244 Male 181. 70.2
+## # i 6,058 more rows
+select(weight_df, subjectid:weight)
+## # A tibble: 6,068 x 5
+## subjectid gender height height_selfreport weight
+## <dbl> <chr> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5
+## 2 10032 Male 170. 173. 72.6
+## 3 10033 Male 174. 173. 92.9
+## 4 10092 Male 166. 168. 79.4
+## 5 10093 Male 191. 196. 94.6
+## 6 10115 Male 172 175. 80.2
+## 7 10117 Male 181 183. 116.
+## 8 10237 Male 185 188. 95.4
+## 9 10242 Male 178. 178. 99.5
+## 10 10244 Male 181. 183. 70.2
+2
+## # i 6,058 more rows
+select(weight_df, 2:5)
+## # A tibble: 6,068 x 4
+## gender height height_selfreport weight
+## <chr> <dbl> <dbl> <dbl>
+## 1 Male 178. 180. 81.5
+## 2 Male 170. 173. 72.6
+## 3 Male 174. 173. 92.9
+## 4 Male 166. 168. 79.4
+## 5 Male 191. 196. 94.6
+## 6 Male 172 175. 80.2
+## 7 Male 181 183. 116.
+## 8 Male 185 188. 95.4
+## 9 Male 178. 178. 99.5
+## 10 Male 181. 183. 70.2
+## # i 6,058 more rows
+select(weight_df, starts_with('h'))
+## # A tibble: 6,068 x 2
+## height height_selfreport
+## <dbl> <dbl>
+## 1 178. 180.
+## 2 170. 173.
+## 3 174. 173.
+## 4 166. 168.
+## 5 191. 196.
+## 6 172 175.
+## 7 181 183.
+## 8 185 188.
+## 9 178. 178.
+## 10 181. 183.
+## # i 6,058 more rows
+select(weight_df, ends_with('t'))
+## # A tibble: 6,068 x 4
+## height height_selfreport weight weight_selfreport
+## <dbl> <dbl> <dbl> <dbl>
+## 1 178. 180. 81.5 81.7
+## 2 170. 173. 72.6 72.6
+## 3 174. 173. 92.9 93.0
+## 4 166. 168. 79.4 79.4
+## 5 191. 196. 94.6 96.6
+## 6 172 175. 80.2 79.4
+## 7 181 183. 116. 113.
+## 8 185 188. 95.4 95.7
+## 9 178. 178. 99.5 99.8
+## 10 181. 183. 70.2 72.6
+## # i 6,058 more rows
+select(weight_df, contains('ght'))
+## # A tibble: 6,068 x 4
+## height height_selfreport weight weight_selfreport
+3
+## <dbl> <dbl> <dbl> <dbl>
+## 1 178. 180. 81.5 81.7
+## 2 170. 173. 72.6 72.6
+## 3 174. 173. 92.9 93.0
+## 4 166. 168. 79.4 79.4
+## 5 191. 196. 94.6 96.6
+## 6 172 175. 80.2 79.4
+## 7 181 183. 116. 113.
+## 8 185 188. 95.4 95.7
+## 9 178. 178. 99.5 99.8
+## 10 181. 183. 70.2 72.6
+## # i 6,058 more rows
+select(weight_df, matches('ˆid|id$'))
+## # A tibble: 6,068 x 1
+## subjectid
+## <dbl>
+## 1 10027
+## 2 10032
+## 3 10033
+## 4 10092
+## 5 10093
+## 6 10115
+## 7 10117
+## 8 10237
+## 9 10242
+## 10 10244
+## # i 6,058 more rows
+select(weight_df, -race)
+## # A tibble: 6,068 x 7
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+select(weight_df, -(2:6))
+## # A tibble: 6,068 x 3
+## subjectid age race
+## <dbl> <dbl> <dbl>
+## 1 10027 41 1
+## 2 10032 35 1
+## 3 10033 42 2
+## 4 10092 31 1
+4
+## 5 10093 21 2
+## 6 10115 39 1
+## 7 10117 32 2
+## 8 10237 23 1
+## 9 10242 36 1
+## 10 10244 23 1
+## # i 6,058 more rows
+select(weight_df, -contains('ght'))
+## # A tibble: 6,068 x 4
+## subjectid gender age race
+## <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 41 1
+## 2 10032 Male 35 1
+## 3 10033 Male 42 2
+## 4 10092 Male 31 1
+## 5 10093 Male 21 2
+## 6 10115 Male 39 1
+## 7 10117 Male 32 2
+## 8 10237 Male 23 1
+## 9 10242 Male 36 1
+## 10 10244 Male 23 1
+## # i 6,058 more rows
+select(weight_df, weight, gender, height)
+## # A tibble: 6,068 x 3
+## weight gender height
+## <dbl> <chr> <dbl>
+## 1 81.5 Male 178.
+## 2 72.6 Male 170.
+## 3 92.9 Male 174.
+## 4 79.4 Male 166.
+## 5 94.6 Male 191.
+## 6 80.2 Male 172
+## 7 116. Male 181
+## 8 95.4 Male 185
+## 9 99.5 Male 178.
+## 10 70.2 Male 181.
+## # i 6,058 more rows
+select(weight_df, weight, gender, height, everything())
+## # A tibble: 6,068 x 8
+## weight gender height subjectid height_selfreport weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 81.5 Male 178. 10027 180. 81.7 41
+## 2 72.6 Male 170. 10032 173. 72.6 35
+## 3 92.9 Male 174. 10033 173. 93.0 42
+## 4 79.4 Male 166. 10092 168. 79.4 31
+## 5 94.6 Male 191. 10093 196. 96.6 21
+## 6 80.2 Male 172 10115 175. 79.4 39
+## 7 116. Male 181 10117 183. 113. 32
+## 8 95.4 Male 185 10237 188. 95.7 23
+## 9 99.5 Male 178. 10242 178. 99.8 36
+5
+## 10 70.2 Male 181. 10244 183. 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+select(weight_df, weight, everything(), -gender, gender)
+## # A tibble: 6,068 x 8
+## weight subjectid height height_selfreport weight_selfreport age race
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 81.5 10027 178. 180. 81.7 41 1
+## 2 72.6 10032 170. 173. 72.6 35 1
+## 3 92.9 10033 174. 173. 93.0 42 2
+## 4 79.4 10092 166. 168. 79.4 31 1
+## 5 94.6 10093 191. 196. 96.6 21 2
+## 6 80.2 10115 172 175. 79.4 39 1
+## 7 116. 10117 181 183. 113. 32 2
+## 8 95.4 10237 185 188. 95.7 23 1
+## 9 99.5 10242 178. 178. 99.8 36 1
+## 10 70.2 10244 181. 183. 72.6 23 1
+## # i 6,058 more rows
+## # i 1 more variable: gender <chr>
+x <- c(1, 42, 3)
+y <- c('good', 'dogs', 'brent')
+is.numeric(x)
+## [1] TRUE
+is.numeric(y)
+## [1] FALSE
+is.character(x)
+## [1] FALSE
+is.character(y)
+## [1] TRUE
+select_if(weight_df, is.character)
+## # A tibble: 6,068 x 1
+## gender
+## <chr>
+## 1 Male
+## 2 Male
+## 3 Male
+## 4 Male
+## 5 Male
+## 6 Male
+## 7 Male
+## 8 Male
+## 9 Male
+## 10 Male
+## # i 6,058 more rows
+select_if(weight_df, is.numeric)
+6
+## # A tibble: 6,068 x 7
+## subjectid height height_selfreport weight weight_selfreport age race
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 178. 180. 81.5 81.7 41 1
+## 2 10032 170. 173. 72.6 72.6 35 1
+## 3 10033 174. 173. 92.9 93.0 42 2
+## 4 10092 166. 168. 79.4 79.4 31 1
+## 5 10093 191. 196. 94.6 96.6 21 2
+## 6 10115 172 175. 80.2 79.4 39 1
+## 7 10117 181 183. 116. 113. 32 2
+## 8 10237 185 188. 95.4 95.7 23 1
+## 9 10242 178. 178. 99.5 99.8 36 1
+## 10 10244 181. 183. 70.2 72.6 23 1
+## # i 6,058 more rows
+has_low_mean <- function(x){is.numeric(x) && (mean(x, na.rm = T) < 700)}
+select_if(weight_df, has_low_mean)
+## # A tibble: 6,068 x 6
+## height height_selfreport weight weight_selfreport age race
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 178. 180. 81.5 81.7 41 1
+## 2 170. 173. 72.6 72.6 35 1
+## 3 174. 173. 92.9 93.0 42 2
+## 4 166. 168. 79.4 79.4 31 1
+## 5 191. 196. 94.6 96.6 21 2
+## 6 172 175. 80.2 79.4 39 1
+## 7 181 183. 116. 113. 32 2
+## 8 185 188. 95.4 95.7 23 1
+## 9 178. 178. 99.5 99.8 36 1
+## 10 181. 183. 70.2 72.6 23 1
+## # i 6,058 more rows
+function(x){is.numeric(x) && (mean(x, na.rm = T) < 700)}
+## function(x){is.numeric(x) && (mean(x, na.rm = T) < 700)}
+select_if(weight_df, function(x){is.numeric(x) && (mean(x, na.rm = T) < 700)})
+## # A tibble: 6,068 x 6
+## height height_selfreport weight weight_selfreport age race
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 178. 180. 81.5 81.7 41 1
+## 2 170. 173. 72.6 72.6 35 1
+## 3 174. 173. 92.9 93.0 42 2
+## 4 166. 168. 79.4 79.4 31 1
+## 5 191. 196. 94.6 96.6 21 2
+## 6 172 175. 80.2 79.4 39 1
+## 7 181 183. 116. 113. 32 2
+## 8 185 188. 95.4 95.7 23 1
+## 9 178. 178. 99.5 99.8 36 1
+## 10 181. 183. 70.2 72.6 23 1
+## # i 6,058 more rows
+select_if(weight_df, ~is.numeric(.) && (mean(., na.rm = T) < 700))
+## # A tibble: 6,068 x 6
+7
+## height height_selfreport weight weight_selfreport age race
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 178. 180. 81.5 81.7 41 1
+## 2 170. 173. 72.6 72.6 35 1
+## 3 174. 173. 92.9 93.0 42 2
+## 4 166. 168. 79.4 79.4 31 1
+## 5 191. 196. 94.6 96.6 21 2
+## 6 172 175. 80.2 79.4 39 1
+## 7 181 183. 116. 113. 32 2
+## 8 185 188. 95.4 95.7 23 1
+## 9 178. 178. 99.5 99.8 36 1
+## 10 181. 183. 70.2 72.6 23 1
+## # i 6,058 more rows
+select(weight_df, sex=gender)
+## # A tibble: 6,068 x 1
+## sex
+## <chr>
+## 1 Male
+## 2 Male
+## 3 Male
+## 4 Male
+## 5 Male
+## 6 Male
+## 7 Male
+## 8 Male
+## 9 Male
+## 10 Male
+## # i 6,058 more rows
+rename_all(weight_df, ~str_replace_all(., '\\_', '.'))
+## # A tibble: 6,068 x 8
+## subjectid gender height height.selfreport weight weight.selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+rename_at(weight_df, vars(matches('ˆid|id$')),
+~str_replace_all(., 'id', 'identification'))
+## # A tibble: 6,068 x 8
+## subjectidentification gender height height_selfreport weight
+## <dbl> <chr> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5
+8
+## 2 10032 Male 170. 173. 72.6
+## 3 10033 Male 174. 173. 92.9
+## 4 10092 Male 166. 168. 79.4
+## 5 10093 Male 191. 196. 94.6
+## 6 10115 Male 172 175. 80.2
+## 7 10117 Male 181 183. 116.
+## 8 10237 Male 185 188. 95.4
+## 9 10242 Male 178. 178. 99.5
+## 10 10244 Male 181. 183. 70.2
+## # i 6,058 more rows
+## # i 3 more variables: weight_selfreport <dbl>, age <dbl>, race <dbl>
+rename_if(weight_df, is.character, str_to_upper)
+## # A tibble: 6,068 x 8
+## subjectid GENDER height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+### Filtering Observations
+slice(weight_df, c(10, 20, 50, 100, 500))
+## # A tibble: 5 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age race
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10244 Male 181. 183. 70.2 72.6 23 1
+## 2 10310 Male 179. 178. 90.8 91.7 32 1
+## 3 10497 Male 167. 168. 85.6 86.2 40 1
+## 4 10701 Male 176. 180. 96.8 97.5 27 1
+## 5 12447 Male 172. 173. 83.6 84.8 25 1
+slice(weight_df, 10:100)
+## # A tibble: 91 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10244 Male 181. 183. 70.2 72.6 23
+## 2 10246 Male 178 178. 88.2 88.5 32
+## 3 10260 Male 173. 175. 70.1 70.3 28
+## 4 10265 Male 181. 183. 104. 104. 36
+## 5 10272 Male 186. 190. 112. 113. 26
+## 6 10286 Male 171. 173. 89.6 90.7 22
+## 7 10293 Male 174 175. 92.4 88.9 38
+## 8 10303 Male 169. 170. 77.9 77.1 26
+9
+## 9 10304 Male 177. 178. 96.9 97.5 34
+## 10 10305 Male 175. 178. 76 75.8 31
+## # i 81 more rows
+## # i 1 more variable: race <dbl>
+slice(weight_df, -(1:10))
+## # A tibble: 6,058 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10246 Male 178 178. 88.2 88.5 32
+## 2 10260 Male 173. 175. 70.1 70.3 28
+## 3 10265 Male 181. 183. 104. 104. 36
+## 4 10272 Male 186. 190. 112. 113. 26
+## 5 10286 Male 171. 173. 89.6 90.7 22
+## 6 10293 Male 174 175. 92.4 88.9 38
+## 7 10303 Male 169. 170. 77.9 77.1 26
+## 8 10304 Male 177. 178. 96.9 97.5 34
+## 9 10305 Male 175. 178. 76 75.8 31
+## 10 10310 Male 179. 178. 90.8 91.7 32
+## # i 6,048 more rows
+## # i 1 more variable: race <dbl>
+slice(weight_df, 600:n())
+## # A tibble: 5,469 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 12779 Male 177. 180. 90 93.9 26
+## 2 12783 Male 172. 175. 101. 95.3 29
+## 3 12784 Male 183. 185. 62.5 64.0 19
+## 4 12786 Male 181. 183. 116. 113. 31
+## 5 12790 Male 168. 173. 68.3 76.2 28
+## 6 12792 Male 174. 180. 65.2 68.1 34
+## 7 12794 Male 172. 175. 80.8 77.1 39
+## 8 12808 Male 176. 175. 103. 105. 27
+## 9 12815 Male 181. 183. 108. 105. 49
+## 10 12816 Male 182. 180. 73.7 72.6 22
+## # i 5,459 more rows
+## # i 1 more variable: race <dbl>
+slice(weight_df, (n()-10):n())
+## # A tibble: 11 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 29493 Female 164. 165. 75.8 76.7 26
+## 2 29494 Female 158. 157. 65.2 64.0 41
+## 3 29495 Female 160. 163. 69.9 63.5 30
+## 4 29496 Female 153. 155. 47.4 47.6 30
+## 5 29497 Female 159. 160. 55.8 56.3 32
+## 6 29498 Female 172. 173. 76.8 75.3 25
+## 7 29501 Female 169. 170. 83.2 81.7 51
+## 8 29502 Female 161. 160. 71.7 68.1 40
+## 9 29503 Female 164. 168. 76.2 76.2 40
+## 10 29511 Female 162. 160. 63.2 60.3 31
+10
+## 11 920103 Female 164. 168. 61 59.9 27
+## # i 1 more variable: race <dbl>
+filter(weight_df, age == '30')
+## # A tibble: 215 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10349 Male 182. 185. 107. 104. 30
+## 2 10404 Male 179. 180. 88.4 88.0 30
+## 3 10419 Male 185 188. 122. 125. 30
+## 4 10422 Male 174. 173. 71.9 77.1 30
+## 5 10735 Male 168. 170. 85.1 83.9 30
+## 6 10756 Male 176. 178. 86.9 86.2 30
+## 7 10863 Male 180. 183. 89.5 88.9 30
+## 8 10900 Male 173. 175. 97.4 97.5 30
+## 9 10981 Male 173 175. 84 81.7 30
+## 10 11124 Male 186. 190. 90.8 90.7 30
+## # i 205 more rows
+## # i 1 more variable: race <dbl>
+filter(weight_df, age == '30', race=='4')
+## # A tibble: 8 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age race
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 11499 Male 167. 170. 75.3 74.0 30 4
+## 2 12454 Male 169. 170. 83.1 81.7 30 4
+## 3 13048 Male 175. 178. 77.5 79.4 30 4
+## 4 15121 Male 167. 170. 67.4 68.1 30 4
+## 5 16769 Male 173 175. 72 72.6 30 4
+## 6 17426 Male 166. 170. 73.6 72.6 30 4
+## 7 20221 Male 176 175. 77.2 77.1 30 4
+## 8 28040 Male 167 170. 63.3 68.1 30 4
+filter(weight_df, age == '30', race=='4', weight <= 100)
+## # A tibble: 8 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age race
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 11499 Male 167. 170. 75.3 74.0 30 4
+## 2 12454 Male 169. 170. 83.1 81.7 30 4
+## 3 13048 Male 175. 178. 77.5 79.4 30 4
+## 4 15121 Male 167. 170. 67.4 68.1 30 4
+## 5 16769 Male 173 175. 72 72.6 30 4
+## 6 17426 Male 166. 170. 73.6 72.6 30 4
+## 7 20221 Male 176 175. 77.2 77.1 30 4
+## 8 28040 Male 167 170. 63.3 68.1 30 4
+filter(weight_df, age == '30', race=='4' & weight <= 100)
+## # A tibble: 8 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age race
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 11499 Male 167. 170. 75.3 74.0 30 4
+## 2 12454 Male 169. 170. 83.1 81.7 30 4
+## 3 13048 Male 175. 178. 77.5 79.4 30 4
+11
+## 4 15121 Male 167. 170. 67.4 68.1 30 4
+## 5 16769 Male 173 175. 72 72.6 30 4
+## 6 17426 Male 166. 170. 73.6 72.6 30 4
+## 7 20221 Male 176 175. 77.2 77.1 30 4
+## 8 28040 Male 167 170. 63.3 68.1 30 4
+filter(weight_df, weight < 80 | weight > 100)
+## # A tibble: 3,865 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10032 Male 170. 173. 72.6 72.6 35
+## 2 10092 Male 166. 168. 79.4 79.4 31
+## 3 10117 Male 181 183. 116. 113. 32
+## 4 10244 Male 181. 183. 70.2 72.6 23
+## 5 10260 Male 173. 175. 70.1 70.3 28
+## 6 10265 Male 181. 183. 104. 104. 36
+## 7 10272 Male 186. 190. 112. 113. 26
+## 8 10303 Male 169. 170. 77.9 77.1 26
+## 9 10305 Male 175. 178. 76 75.8 31
+## 10 10312 Male 178 180. 71.4 74.9 28
+## # i 3,855 more rows
+## # i 1 more variable: race <dbl>
+filter(weight_df, weight %in% 90:100)
+## # A tibble: 97 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10646 Male 181. 183. 92 90.7 41
+## 2 10707 Male 179 180. 92 95.3 29
+## 3 10720 Male 173. 175. 90 89.4 31
+## 4 10922 Male 172. 173. 90 88.5 39
+## 5 10933 Male 181. 183. 95 95.3 32
+## 6 11299 Male 175. 180. 97 93.0 40
+## 7 11423 Male 173. 175. 97 96.2 35
+## 8 11505 Male 175. 175. 98 97.5 36
+## 9 11875 Male 164. 165. 92 93.0 39
+## 10 12019 Male 184. 183. 91 93.5 25
+## # i 87 more rows
+## # i 1 more variable: race <dbl>
+filter(weight_df, age == '30',
+str_length(gender) < 6 & (age != race | weight > 100))
+## # A tibble: 152 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10349 Male 182. 185. 107. 104. 30
+## 2 10404 Male 179. 180. 88.4 88.0 30
+## 3 10419 Male 185 188. 122. 125. 30
+## 4 10422 Male 174. 173. 71.9 77.1 30
+## 5 10735 Male 168. 170. 85.1 83.9 30
+## 6 10756 Male 176. 178. 86.9 86.2 30
+## 7 10863 Male 180. 183. 89.5 88.9 30
+## 8 10900 Male 173. 175. 97.4 97.5 30
+12
+## 9 10981 Male 173 175. 84 81.7 30
+## 10 11124 Male 186. 190. 90.8 90.7 30
+## # i 142 more rows
+## # i 1 more variable: race <dbl>
+filter_all(weight_df, any_vars(is.na(.)))
+## # A tibble: 0 x 8
+## # i 8 variables: subjectid <dbl>, gender <chr>, height <dbl>,
+## # height_selfreport <dbl>, weight <dbl>, weight_selfreport <dbl>, age <dbl>,
+## # race <dbl>
+filter_at(weight_df, vars(matches('ˆid|id$')), all_vars(. > 100))
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+filter_at(weight_df, vars(matches('ˆid|id$')),
+all_vars(. < median(., na.rm=T)))
+## # A tibble: 3,034 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 3,024 more rows
+## # i 1 more variable: race <dbl>
+filter_if(weight_df, is.numeric,
+all_vars(. < median(., na.rm=T)))
+## # A tibble: 0 x 8
+## # i 8 variables: subjectid <dbl>, gender <chr>, height <dbl>,
+## # height_selfreport <dbl>, weight <dbl>, weight_selfreport <dbl>, age <dbl>,
+## # race <dbl>
+13
+### Reshaping Data Frames
+mutate(weight_df, acc = height == height_selfreport)
+## # A tibble: 6,068 x 9
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 2 more variables: race <dbl>, acc <lgl>
+mutate(weight_df, len = str_length(gender))
+## # A tibble: 6,068 x 9
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 2 more variables: race <dbl>, len <int>
+mutate(weight_df, acc = height == height_selfreport,
+fast = age < mean(age, na.rm=TRUE))
+## # A tibble: 6,068 x 10
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+14
+## # i 3 more variables: race <dbl>, acc <lgl>, fast <lgl>
+mutate_all(weight_df, as.character)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <chr> <chr> <chr> <chr> <chr> <chr> <chr>
+## 1 10027 Male 177.6 180.34 81.5 81.6696914700544 41
+## 2 10032 Male 170.2 172.72 72.6 72.5952813067151 35
+## 3 10033 Male 173.5 172.72 92.9 93.0127041742287 42
+## 4 10092 Male 165.5 167.64 79.4 79.4010889292196 31
+## 5 10093 Male 191.4 195.58 94.6 96.6424682395644 21
+## 6 10115 Male 172 175.26 80.2 79.4010889292196 39
+## 7 10117 Male 181 182.88 116.2 113.430127041742 32
+## 8 10237 Male 185 187.96 95.4 95.7350272232305 23
+## 9 10242 Male 177.7 177.8 99.5 99.8185117967332 36
+## 10 10244 Male 181.1 182.88 70.2 72.5952813067151 23
+## # i 6,058 more rows
+## # i 1 more variable: race <chr>
+mutate_at(weight_df, vars(matches('ˆht|ht$')), log)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 5.18 180. 4.40 81.7 41
+## 2 10032 Male 5.14 173. 4.28 72.6 35
+## 3 10033 Male 5.16 173. 4.53 93.0 42
+## 4 10092 Male 5.11 168. 4.37 79.4 31
+## 5 10093 Male 5.25 196. 4.55 96.6 21
+## 6 10115 Male 5.15 175. 4.38 79.4 39
+## 7 10117 Male 5.20 183. 4.76 113. 32
+## 8 10237 Male 5.22 188. 4.56 95.7 23
+## 9 10242 Male 5.18 178. 4.60 99.8 36
+## 10 10244 Male 5.20 183. 4.25 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate_if(weight_df, is.character, as.factor)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <fct> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+15
+mutate(weight_df, mass = if_else(weight < 100, 'over', 'under'))
+## # A tibble: 6,068 x 9
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 2 more variables: race <dbl>, mass <chr>
+mutate(weight_df, gender = recode(gender, 'Female'='F', 'Male'='M'))
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 M 178. 180. 81.5 81.7 41
+## 2 10032 M 170. 173. 72.6 72.6 35
+## 3 10033 M 174. 173. 92.9 93.0 42
+## 4 10092 M 166. 168. 79.4 79.4 31
+## 5 10093 M 191. 196. 94.6 96.6 21
+## 6 10115 M 172 175. 80.2 79.4 39
+## 7 10117 M 181 183. 116. 113. 32
+## 8 10237 M 185 188. 95.4 95.7 23
+## 9 10242 M 178. 178. 99.5 99.8 36
+## 10 10244 M 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, age = recode(age, `39` = 40, `29` = 30))
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 40
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, weight = case_when(weight < 20 ~ 'under',
+16
+weight > 100 ~ 'over', TRUE ~ 'within')
+)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 178. 180. within 81.7 41
+## 2 10032 Male 170. 173. within 72.6 35
+## 3 10033 Male 174. 173. within 93.0 42
+## 4 10092 Male 166. 168. within 79.4 31
+## 5 10093 Male 191. 196. within 96.6 21
+## 6 10115 Male 172 175. within 79.4 39
+## 7 10117 Male 181 183. over 113. 32
+## 8 10237 Male 185 188. within 95.7 23
+## 9 10242 Male 178. 178. within 99.8 36
+## 10 10244 Male 181. 183. within 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, weight = case_when( weight < 20 ~ 'under',
+weight > 100 ~ 'over', TRUE ~ 'within')
+)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 178. 180. within 81.7 41
+## 2 10032 Male 170. 173. within 72.6 35
+## 3 10033 Male 174. 173. within 93.0 42
+## 4 10092 Male 166. 168. within 79.4 31
+## 5 10093 Male 191. 196. within 96.6 21
+## 6 10115 Male 172 175. within 79.4 39
+## 7 10117 Male 181 183. over 113. 32
+## 8 10237 Male 185 188. within 95.7 23
+## 9 10242 Male 178. 178. within 99.8 36
+## 10 10244 Male 181. 183. within 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, weight = case_when( weight < 100 ~ 'over',
+weight < 110 ~ 'over+', TRUE ~ 'within')
+)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 178. 180. over 81.7 41
+## 2 10032 Male 170. 173. over 72.6 35
+## 3 10033 Male 174. 173. over 93.0 42
+## 4 10092 Male 166. 168. over 79.4 31
+## 5 10093 Male 191. 196. over 96.6 21
+## 6 10115 Male 172 175. over 79.4 39
+## 7 10117 Male 181 183. within 113. 32
+## 8 10237 Male 185 188. over 95.7 23
+## 9 10242 Male 178. 178. over 99.8 36
+17
+## 10 10244 Male 181. 183. over 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, weight = case_when( weight < 100 ~ 'over+',
+weight < 110 ~ 'over', TRUE ~ 'within')
+)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 178. 180. over+ 81.7 41
+## 2 10032 Male 170. 173. over+ 72.6 35
+## 3 10033 Male 174. 173. over+ 93.0 42
+## 4 10092 Male 166. 168. over+ 79.4 31
+## 5 10093 Male 191. 196. over+ 96.6 21
+## 6 10115 Male 172 175. over+ 79.4 39
+## 7 10117 Male 181 183. within 113. 32
+## 8 10237 Male 185 188. over+ 95.7 23
+## 9 10242 Male 178. 178. over+ 99.8 36
+## 10 10244 Male 181. 183. over+ 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, weight = case_when( weight < 100 ~ 'over+',
+weight < 110 ~ 'over')
+)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <chr> <dbl> <dbl>
+## 1 10027 Male 178. 180. over+ 81.7 41
+## 2 10032 Male 170. 173. over+ 72.6 35
+## 3 10033 Male 174. 173. over+ 93.0 42
+## 4 10092 Male 166. 168. over+ 79.4 31
+## 5 10093 Male 191. 196. over+ 96.6 21
+## 6 10115 Male 172 175. over+ 79.4 39
+## 7 10117 Male 181 183. <NA> 113. 32
+## 8 10237 Male 185 188. over+ 95.7 23
+## 9 10242 Male 178. 178. over+ 99.8 36
+## 10 10244 Male 181. 183. over+ 72.6 23
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+mutate(weight_df, weight_reverse = plyr::mapvalues(weight,
+from=0:100, to=100:0)
+)
+## The following `from` values were not present in `x`: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+## # A tibble: 6,068 x 9
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+18
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 6,058 more rows
+## # i 2 more variables: race <dbl>, weight_reverse <dbl>
+transmute(weight_df, sex = gender, accuracy = weight == weight_selfreport)
+## # A tibble: 6,068 x 2
+## sex accuracy
+## <chr> <lgl>
+## 1 Male FALSE
+## 2 Male FALSE
+## 3 Male FALSE
+## 4 Male FALSE
+## 5 Male FALSE
+## 6 Male FALSE
+## 7 Male FALSE
+## 8 Male FALSE
+## 9 Male FALSE
+## 10 Male FALSE
+## # i 6,058 more rows
+arrange(weight_df, gender, age)
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 26138 Female 171. 170. 74.3 65.3 17
+## 2 12469 Female 182. 185. 88.2 83.5 18
+## 3 16084 Female 160 163. 69.9 64.4 18
+## 4 18075 Female 166. 168. 61.3 65.8 18
+## 5 18079 Female 154. 152. 57.7 59.4 18
+## 6 18134 Female 163. 165. 59.8 61.3 18
+## 7 18163 Female 168. 170. 60.6 62.6 18
+## 8 18190 Female 166. 170. 58.3 59.4 18
+## 9 18193 Female 166. 165. 56.4 57.2 18
+## 10 18288 Female 156. 157. 51.9 52.6 18
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+arrange(weight_df, gender, desc(age))
+## # A tibble: 6,068 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 25872 Female 158. 163. 71.2 70.8 58
+## 2 18115 Female 156. 157. 66.9 66.2 56
+## 3 29471 Female 174 178. 90.6 89.4 56
+## 4 25862 Female 162. 163. 62.3 62.6 55
+## 5 29410 Female 170. 175. 105. 90.7 55
+## 6 22035 Female 161. 163. 75.9 76.2 54
+## 7 25356 Female 164. 165. 68.1 67.2 54
+19
+## 8 28284 Female 156. 157. 83.1 83.9 54
+## 9 29408 Female 160. 160. 84.2 81.7 54
+## 10 17754 Female 159. 163. 75.4 74.9 53
+## # i 6,058 more rows
+## # i 1 more variable: race <dbl>
+sample_frac(weight_df, 0.1)
+## # A tibble: 607 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 14271 Male 174. 175. 111. 112. 23
+## 2 15763 Male 177. 180. 99.2 97.5 31
+## 3 25052 Female 166. 168. 78 76.2 41
+## 4 27927 Male 174. 175. 99.7 99.8 20
+## 5 12745 Male 174. 180. 74 74.9 20
+## 6 28011 Male 173. 180. 67.3 70.3 23
+## 7 14970 Male 179. 183. 74.6 74.9 27
+## 8 17424 Male 177. 178. 106. 107. 32
+## 9 11549 Male 173 175. 67.7 68.1 42
+## 10 12931 Male 191. 193. 114 109. 26
+## # i 597 more rows
+## # i 1 more variable: race <dbl>
+sample_frac(weight_df, 0.1, replace=FALSE)
+## # A tibble: 607 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 18131 Female 171. 175. 79.1 81.7 28
+## 2 27446 Female 168. 168. 71.1 69.4 25
+## 3 10517 Male 164. 165. 72.7 73.0 35
+## 4 17322 Male 174. 180. 85.1 83.9 37
+## 5 17367 Female 165. 165. 69 70.3 26
+## 6 17403 Male 182. 188. 86.8 83.9 41
+## 7 14967 Male 172. 175. 82.2 80.3 35
+## 8 16470 Male 181. 183. 103. 102. 22
+## 9 28733 Female 166 168. 61.4 60.3 25
+## 10 13931 Male 179. 180. 81.8 83.9 36
+## # i 597 more rows
+## # i 1 more variable: race <dbl>
+sample_n(weight_df, 15)
+## # A tibble: 15 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 21041 Male 177. 180. 95.5 90.7 22
+## 2 28485 Male 176. 178. 80.7 79.4 36
+## 3 13179 Female 158. 160. 72.1 74.9 31
+## 4 25210 Female 159. 160. 53.7 49.0 18
+## 5 14621 Male 176. 178. 82.7 81.7 26
+## 6 20206 Male 166. 168. 95.1 88.5 36
+## 7 24091 Male 169. 170. 68.6 70.3 21
+## 8 13386 Female 173. 175. 76.7 74.9 42
+## 9 29059 Male 172. 178. 86.2 80.8 21
+20
+## 10 16516 Female 156. 157. 72.5 72.6 27
+## 11 20615 Male 172. 175. 78.1 79.4 37
+## 12 28003 Male 179 183. 77.8 77.1 21
+## 13 27334 Male 176. 175. 88.4 88.5 23
+## 14 13966 Male 185. 188. 91.5 92.1 36
+## 15 27818 Male 178. 180. 100. 99.8 41
+## # i 1 more variable: race <dbl>
+top_n(weight_df, 15, weight)
+## # A tibble: 15 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10525 Male 184 183. 140 141. 33
+## 2 10761 Male 185. 188. 141. 143. 28
+## 3 14141 Male 184. 188. 134. 129. 26
+## 4 14327 Male 193. 196. 132. 133. 26
+## 5 15142 Male 187. 190. 143. 141. 45
+## 6 15612 Male 182. 183. 134. 136. 28
+## 7 16029 Male 190. 196. 137. 136. 23
+## 8 16917 Male 194. 196. 134. 127. 25
+## 9 17570 Male 188. 190. 135. 136. 32
+## 10 27150 Male 191 193. 144. 146. 22
+## 11 28379 Male 178. 180. 133. 127. 49
+## 12 28437 Male 186. 190. 137. 129. 30
+## 13 28479 Male 180 183. 134. 129. 23
+## 14 28656 Male 188. 193. 138. 134. 39
+## 15 29314 Male 181. 183. 135. 132. 24
+## # i 1 more variable: race <dbl>
+summarize(weight_df, mean_weight = mean(weight, na.rm = T),
+median_weight = median(weight, na.rm = T),
+sd_weight = sd(weight, na.rm = T)
+)
+## mean_weight median_weight sd_weight
+## 1 79.70939 78.5 15.65282
+summarize_all(weight_df, n_distinct)
+## # A tibble: 1 x 8
+## subjectid gender height height_selfreport weight weight_selfreport age race
+## <int> <int> <int> <int> <int> <int> <int> <int>
+## 1 6068 2 481 29 783 188 42 7
+summarize_at(weight_df, vars(matches('ˆid|id$')), ~mean(., na.rm=T))
+## # A tibble: 1 x 1
+## subjectid
+## <dbl>
+## 1 20757.
+summarize_if(weight_df, is.numeric, ~mean(., na.rm=T))
+## # A tibble: 1 x 7
+## subjectid height height_selfreport weight weight_selfreport age race
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 20757. 171. 173. 79.7 79.3 29.8 1.62
+21
+summarise_at(weight_df, vars(weight), list(mean = ~mean(., na.rm=T),
+median = ~median(., na.rm=T), sd = ~sd(., na.rm=T))
+)
+## # A tibble: 1 x 3
+## mean median sd
+## <dbl> <dbl> <dbl>
+## 1 79.7 78.5 15.7
+summarise_at(weight_df, vars(weight, age), list(mean = ~mean(., na.rm=T),
+median = ~median(., na.rm=T), sd = ~sd(., na.rm=T))
+)
+## # A tibble: 1 x 6
+## weight_mean age_mean weight_median age_median weight_sd age_sd
+## <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 79.7 29.8 78.5 28 15.7 8.67
+weight_by_age <- group_by(weight_df, age)
+summarize(weight_by_age, mean = mean(weight, na.rm=T))
+## mean
+## 1 79.70939
+summarize_at(weight_by_age, vars(weight), list(mean = ~mean(., na.rm=T),
+median = ~median(., na.rm=T), sd = ~sd(., na.rm=T))
+)
+## # A tibble: 42 x 4
+## age mean median sd
+## <dbl> <dbl> <dbl> <dbl>
+## 1 17 78.4 78.4 5.87
+## 2 18 67.4 66.9 9.84
+## 3 19 71.5 70.2 12.7
+## 4 20 74.1 73 13.3
+## 5 21 75.3 73.8 13.8
+## 6 22 77.3 76.2 14.8
+## 7 23 77.2 75.7 16.1
+## 8 24 78.0 76.6 16.0
+## 9 25 78.8 77.3 16.1
+## 10 26 79.2 76.3 16.2
+## # i 32 more rows
+primes <- c(2, 3, 5, 7, 11, 13, 17, 19, 23, 29)
+sum(primes)
+## [1] 129
+sqrt(sum(primes))
+## [1] 11.35782
+log(sqrt(sum(primes)))
+## [1] 2.429906
+log(sqrt(sum(sample(c(primes, rep(NA, 3)), size=5, replace=T),
+na.rm=T)), base=2)
+22
+## [1] 2.261781
+log(
+sqrt(
+sum(
+sample(
+c(primes, rep(NA, 3)),
+size=5,
+replace=T),
+na.rm=T)),
+base=2)
+## [1] 2.42899
+primes_appended <- c(primes, rep(NA, 3))
+primes_subsample <- sample(primes_appended, size=5, replace=T)
+primes_subsample_sum <- sum(primes_subsample, na.rm=T)
+sqrt_primes_subsample_sum <- sqrt(primes_subsample_sum)
+log(sqrt_primes_subsample_sum, base=2)
+## [1] 2.877444
+tmpvar <- c(primes, rep(NA, 3))
+tmpvar <- sample(tmpvar, size=5, replace=T)
+tmpvar <- sum(tmpvar, na.rm=T)
+tmpvar <- sqrt(tmpvar)
+log(tmpvar, base=2)
+## [1] 3.043731
+primes %>% sum()
+## [1] 129
+primes %>% sum(na.rm=T)
+## [1] 129
+primes %>% sum() %>% sqrt() %>% log()
+## [1] 2.429906
+primes %>%
+c(rep(NA, 3)) %>%
+sample(size=5, replace=T) %>%
+sum(na.rm=T) %>%
+sqrt() %>%
+log(base=2)
+## [1] 3.245927
+weight_df %>%
+mutate(accuracy = weight == weight_selfreport,
+stimulus = recode(gender, 'Male'='M', 'Female'='F')) %>%
+select(weight, age, gender, race) %>%
+arrange(age, weight)
+## # A tibble: 6,068 x 4
+## weight age gender race
+## <dbl> <dbl> <chr> <dbl>
+23
+## 1 74.3 17 Female 2
+## 2 82.6 17 Male 4
+## 3 44.4 18 Female 3
+## 4 47.8 18 Female 1
+## 5 49.9 18 Female 1
+## 6 50.3 18 Female 1
+## 7 51.2 18 Female 1
+## 8 51.9 18 Female 2
+## 9 52 18 Female 2
+## 10 52.3 18 Female 1
+## # i 6,058 more rows
+weight_df %>%
+filter(gender == 'Male') %>%
+mutate(word_length = str_length(weight_selfreport),
+accuracy = weight == weight_selfreport) %>%
+group_by(word_length)
+## # A tibble: 4,082 x 10
+## # Groups: word_length [4]
+## subjectid gender height height_selfreport weight weight_selfreport age
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 10027 Male 178. 180. 81.5 81.7 41
+## 2 10032 Male 170. 173. 72.6 72.6 35
+## 3 10033 Male 174. 173. 92.9 93.0 42
+## 4 10092 Male 166. 168. 79.4 79.4 31
+## 5 10093 Male 191. 196. 94.6 96.6 21
+## 6 10115 Male 172 175. 80.2 79.4 39
+## 7 10117 Male 181 183. 116. 113. 32
+## 8 10237 Male 185 188. 95.4 95.7 23
+## 9 10242 Male 178. 178. 99.5 99.8 36
+## 10 10244 Male 181. 183. 70.2 72.6 23
+## # i 4,072 more rows
+## # i 3 more variables: race <dbl>, word_length <int>, accuracy <lgl>
+### Combining Data Frames
+Df_1 <- tibble(x = c(1, 2, 3),
+y = c(2, 7, 1),
+z = c(0, 2, 7))
+Df_2 <- tibble(y = c(5, 7),
+z = c(6, 7),
+x = c(1, 2))
+Df_3 <- tibble(a = c(5, 6, 1),
+b = c('a', 'b', 'c'),
+c = c(T, T, F))
+bind_rows(Df_1, Df_2)
+## # A tibble: 5 x 3
+## x y z
+## <dbl> <dbl> <dbl>
+## 1 1 2 0
+## 2 2 7 2
+## 3 3 1 7
+24
+## 4 1 5 6
+## 5 2 7 7
+bind_rows(Df_1, Df_2, Df_2, Df_1)
+## # A tibble: 10 x 3
+## x y z
+## <dbl> <dbl> <dbl>
+## 1 1 2 0
+## 2 2 7 2
+## 3 3 1 7
+## 4 1 5 6
+## 5 2 7 7
+## 6 1 5 6
+## 7 2 7 7
+## 8 1 2 0
+## 9 2 7 2
+## 10 3 1 7
+bind_cols(Df_1, Df_3)
+## # A tibble: 3 x 6
+## x y z a b c
+## <dbl> <dbl> <dbl> <dbl> <chr> <lgl>
+## 1 1 2 0 5 a TRUE
+## 2 2 7 2 6 b TRUE
+## 3 3 1 7 1 c FALSE
+bind_cols(Df_1, Df_3, Df_3, Df_1)
+## New names:
+## * `x` -> `x...1`
+## * `y` -> `y...2`
+## * `z` -> `z...3`
+## * `a` -> `a...4`
+## * `b` -> `b...5`
+## * `c` -> `c...6`
+## * `a` -> `a...7`
+## * `b` -> `b...8`
+## * `c` -> `c...9`
+## * `x` -> `x...10`
+## * `y` -> `y...11`
+## * `z` -> `z...12`
+## # A tibble: 3 x 12
+## x...1 y...2 z...3 a...4 b...5 c...6 a...7 b...8 c...9 x...10 y...11 z...12
+## <dbl> <dbl> <dbl> <dbl> <chr> <lgl> <dbl> <chr> <lgl> <dbl> <dbl> <dbl>
+## 1 1 2 0 5 a TRUE 5 a TRUE 1 2 0
+## 2 2 7 2 6 b TRUE 6 b TRUE 2 7 2
+## 3 3 1 7 1 c FALSE 1 c FALSE 3 1 7
+##inner_join(blp_df, stimuli)
+Df_a <- tibble(x = c(1, 2, 3),
+y = c('a', 'b', 'c'))
+Df_b <- tibble(x = c(2, 3, 4),
+z = c('d', 'e', 'f'))
+25
+inner_join(Df_a, Df_b)
+## Joining with `by = join_by(x)`
+## # A tibble: 2 x 3
+## x y z
+## <dbl> <chr> <chr>
+## 1 2 b d
+## 2 3 c e
+left_join(Df_a, Df_b)
+## Joining with `by = join_by(x)`
+## # A tibble: 3 x 3
+## x y z
+## <dbl> <chr> <chr>
+## 1 1 a <NA>
+## 2 2 b d
+## 3 3 c e
+right_join(Df_a, Df_b)
+## Joining with `by = join_by(x)`
+## # A tibble: 3 x 3
+## x y z
+## <dbl> <chr> <chr>
+## 1 2 b d
+## 2 3 c e
+## 3 4 <NA> f
+full_join(Df_a, Df_b)
+## Joining with `by = join_by(x)`
+## # A tibble: 4 x 3
+## x y z
+## <dbl> <chr> <chr>
+## 1 1 a <NA>
+## 2 2 b d
+## 3 3 c e
+## 4 4 <NA> f
+Df_4 <- tibble(x = c(1, 2, 3),
+y = c(2, 7, 1),
+z = c(0, 2, 7))
+Df_5 <- tibble(a = c(1, 1, 7),
+b = c(2, 3, 7),
+c = c('a', 'b', 'c'))
+inner_join(Df_4, Df_5, by=c('x' = 'a'))
+## # A tibble: 2 x 5
+## x y z b c
+## <dbl> <dbl> <dbl> <dbl> <chr>
+## 1 1 2 0 2 a
+## 2 1 2 0 3 b
+26
+inner_join(Df_4, Df_5, by=c('x' = 'a', 'y' = 'b'))
+## # A tibble: 1 x 4
+## x y z c
+## <dbl> <dbl> <dbl> <chr>
+## 1 1 2 0 a
+Df_6 <- tibble(x = c(1, 2, 3),
+y = c(4, 5, 6),
+z = c(7, 8, 9))
+Df_7 <- tibble(y = c(6, 7),
+z = c(9, 10),
+x = c(3, 4))
+intersect(Df_6, Df_7)
+## # A tibble: 1 x 3
+## x y z
+## <dbl> <dbl> <dbl>
+## 1 3 6 9
+union(Df_6, Df_7)
+## # A tibble: 4 x 3
+## x y z
+## <dbl> <dbl> <dbl>
+## 1 1 4 7
+## 2 2 5 8
+## 3 3 6 9
+## 4 4 7 10
+setdiff(Df_6, Df_7)
+## # A tibble: 2 x 3
+## x y z
+## <dbl> <dbl> <dbl>
+## 1 1 4 7
+## 2 2 5 8
+setdiff(Df_7, Df_6)
+## # A tibble: 1 x 3
+## y z x
+## <dbl> <dbl> <dbl>
+## 1 7 10 4
+### Pivot Long and Wide
+weight_long <- pivot_longer(weight_df, cols = subjectid, names_to
+= 'weight_long', values_to = 'gender_long')
+weight_long %>%
+group_by(gender) %>%
+summarize_at('weight', list(median=median,
+mean=mean, min=min, max=max))
+## # A tibble: 2 x 5
+## gender median mean min max
+## <chr> <dbl> <dbl> <dbl> <dbl>
+## 1 Female 66.8 67.8 35.8 120.
+27
+## 2 Male 84.6 85.5 39.3 144.
+pivot_wider(weight_long, names_from = 'weight', values_from = 'gender')
+## # A tibble: 6,068 x 790
+## height height_selfreport weight_selfreport age race weight_long
+## <dbl> <dbl> <dbl> <dbl> <dbl> <chr>
+## 1 178. 180. 81.7 41 1 subjectid
+## 2 170. 173. 72.6 35 1 subjectid
+## 3 174. 173. 93.0 42 2 subjectid
+## 4 166. 168. 79.4 31 1 subjectid
+## 5 191. 196. 96.6 21 2 subjectid
+## 6 172 175. 79.4 39 1 subjectid
+## 7 181 183. 113. 32 2 subjectid
+## 8 185 188. 95.7 23 1 subjectid
+## 9 178. 178. 99.8 36 1 subjectid
+## 10 181. 183. 72.6 23 1 subjectid
+## # i 6,058 more rows
+## # i 784 more variables: gender_long <dbl>, `81.5` <chr>, `72.6` <chr>,
+## # `92.9` <chr>, `79.4` <chr>, `94.6` <chr>, `80.2` <chr>, `116.2` <chr>,
+## # `95.4` <chr>, `99.5` <chr>, `70.2` <chr>, `88.2` <chr>, `70.1` <chr>,
+## # `103.7` <chr>, `111.6` <chr>, `89.6` <chr>, `92.4` <chr>, `77.9` <chr>,
+## # `96.9` <chr>, `76` <chr>, `90.8` <chr>, `71.4` <chr>, `74.6` <chr>,
+## # `79.2` <chr>, `91.5` <chr>, `96.5` <chr>, `67.5` <chr>, `107.3` <chr>, ...
+### Chapter 4 Data Visualization
+library(ggplot2)
+library(tidyverse)
+library(ggExtra)
+## Warning: package 'ggExtra' was built under R version 4.3.2
+simple_df <- tribble(
+~var1, ~var2, ~var3,
+1, 4, 'a',
+3, 10, 'a',
+7, 40, 'b',
+10, 90, 'b'
+)
+ggplot(simple_df, mapping = aes(x = var1, y = var2) )+ geom_point()
+28
+0
+25
+50
+75
+2.5 5.0 7.5 10.0
+var1
+var2ggplot(simple_df, mapping = aes(x = var1, y = var2) )+ geom_line()
+29
+0
+25
+50
+75
+2.5 5.0 7.5 10.0
+var1
+var2ggplot(simple_df, mapping = aes(x = var1, y = var2, shape = var3)
+) + geom_point()
+30
+0
+25
+50
+75
+2.5 5.0 7.5 10.0
+var1
+var2 var3
+a
+bggplot(simple_df, mapping = aes(x = var1, y = var2, colour = var3)
+) + geom_point()
+31
+0
+25
+50
+75
+2.5 5.0 7.5 10.0
+var1
+var2 var3
+a
+bggplot(simple_df, aes(x = var1, y = var2) ) + geom_point()
+32
+0
+25
+50
+75
+2.5 5.0 7.5 10.0
+var1
+var2ggplot(simple_df, aes(var1, var2) ) + geom_point()
+33
+0
+25
+50
+75
+2.5 5.0 7.5 10.0
+var1
+var2### Histograms
+ggplot(weight_df, mapping = aes(x = height)) + geom_histogram()
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+34
+0
+200
+400
+140 160 180 200
+height
+countggplot(weight_df, mapping = aes(x = height) ) + geom_histogram(binwidth = 2.54)
+35
+0
+200
+400
+600
+140 160 180 200
+height
+countggplot(weight_df, mapping = aes(x = height)) +
+geom_histogram(binwidth = 2.54, colour = 'white', fill = 'darkblue')
+36
+0
+200
+400
+600
+140 160 180 200
+height
+countggplot(weight_df, mapping = aes(x = height, fill = gender)) +
+geom_histogram(binwidth = 2.54, colour = 'white')
+37
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender)
+) + geom_histogram(binwidth = 2.54, colour = 'white', position = 'fill')
+38
+0.00
+0.25
+0.50
+0.75
+1.00
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender)
+) + geom_histogram(binwidth = 2.54, colour = 'white', position = 'dodge')
+39
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender)
+) + geom_histogram(binwidth = 2.54, colour = 'white', position = 'identity')
+40
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender)) + geom_histogram(binwidth = 2.54, colour = '
+41
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, colour = gender)) + geom_histogram(binwidth = 2.54, fill = '
+42
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Male### Frequency Polygons
+ggplot(weight_df, mapping = aes(x = height)) +
+geom_freqpoly(binwidth = 2.54, colour = 'steelblue')
+43
+0
+200
+400
+600
+150 170 190
+height
+countggplot(weight_df, mapping = aes(x = height, colour = gender)) + geom_freqpoly(binwidth = 2.54)
+44
+0
+200
+400
+600
+150 170 190
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, colour = gender)) + geom_freqpoly(binwidth = 2.54, position
+45
+0
+200
+400
+600
+150 170 190
+height
+count gender
+Female
+Maleggplot(weight_df,
+mapping = aes(x = height, fill = gender)
+) + geom_area(binwidth = 2.54, stat = "bin", position = 'identity', alpha = 0.5)
+46
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender)) +
+geom_area(binwidth = 2.54, stat = "bin", position = 'stack')
+47
+0
+200
+400
+600
+140 160 180 200
+height
+count gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender)) +
+geom_area(binwidth = 2.54, stat = "bin", position = 'fill')
+48
+0.00
+0.25
+0.50
+0.75
+1.00
+140 160 180 200
+height
+count gender
+Female
+Male### Density Plots
+ggplot(weight_df, mapping = aes(x = height)) + geom_density()
+49
+0.00
+0.01
+0.02
+0.03
+0.04
+140 160 180 200
+height
+densityggplot(weight_df, mapping = aes(x = height)) +
+geom_density(colour = 'white', fill = 'darkblue')
+50
+0.00
+0.01
+0.02
+0.03
+0.04
+140 160 180 200
+height
+densityggplot(weight_df, mapping = aes(x = height, fill = gender, colour = gender)) + geom_density(alpha = 0.
+51
+0.00
+0.02
+0.04
+0.06
+140 160 180 200
+height
+density gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender, colour = gender)) + geom_density(position = '
+52
+0.00
+0.02
+0.04
+0.06
+0.08
+140 160 180 200
+height
+density gender
+Female
+Maleggplot(weight_df, mapping = aes(x = height, fill = gender, colour = gender)) + geom_density(position = '
+53
+0.00
+0.25
+0.50
+0.75
+1.00
+140 160 180 200
+height
+density gender
+Female
+Male### Barplots
+titanic_df <- read_csv('C:/Users/bkell/Documents/Data Science Masters Program/DSE5001/TitanicSurvival.cs
+## New names:
+## Rows: 1309 Columns: 5
+## -- Column specification
+## -------------------------------------------------------- Delimiter: "," chr
+## (4): ...1, survived, sex, passengerClass dbl (1): age
+## i Use `spec()` to retrieve the full column specification for this data. i
+## Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## * `` -> `...1`
+glimpse(titanic_df)
+## Rows: 1,309
+## Columns: 5
+## $ ...1 <chr> "Allen, Miss. Elisabeth Walton", "Allison, Master. Huds~
+## $ survived <chr> "yes", "yes", "no", "no", "no", "yes", "yes", "no", "ye~
+## $ sex <chr> "female", "male", "female", "male", "female", "male", "~
+## $ age <dbl> 29.0000, 0.9167, 2.0000, 30.0000, 25.0000, 48.0000, 63.~
+## $ passengerClass <chr> "1st", "1st", "1st", "1st", "1st", "1st", "1st", "1st",~
+ggplot(titanic_df, mapping = aes(x = passengerClass)) + geom_bar()
+54
+0
+200
+400
+600
+1st 2nd 3rd
+passengerClass
+countggplot(titanic_df, mapping = aes(x = passengerClass, fill = survived)) +
+geom_bar()
+55
+0
+200
+400
+600
+1st 2nd 3rd
+passengerClass
+count survived
+no
+yesggplot(titanic_df, mapping = aes(x = passengerClass, fill = survived)) +
+geom_bar(position = 'dodge')
+56
+0
+200
+400
+1st 2nd 3rd
+passengerClass
+count survived
+no
+yescarprices <- read_csv('C:/Users/bkell/Documents/Data Science Masters Program/DSE5001/carprice.csv')
+## New names:
+## Rows: 48 Columns: 10
+## -- Column specification
+## -------------------------------------------------------- Delimiter: "," chr
+## (1): Type dbl (9): ...1, Min.Price, Price, Max.Price, Range.Price, RoughRange,
+## gpm100,...
+## i Use `spec()` to retrieve the full column specification for this data. i
+## Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## * `` -> `...1`
+carprices %>% group_by(Type)
+## # A tibble: 48 x 10
+## # Groups: Type [6]
+## ...1 Type Min.Price Price Max.Price Range.Price RoughRange gpm100 MPG.city
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 6 Midsi~ 14.2 15.7 17.3 3.1 3.09 3.8 22
+## 2 7 Large 19.9 20.8 21.7 1.8 1.79 4.2 19
+## 3 8 Large 22.6 23.7 24.9 2.3 2.31 4.9 16
+## 4 9 Midsi~ 26.3 26.3 26.3 0 -0.01 4.3 19
+## 5 10 Large 33 34.7 36.3 3.3 3.3 4.9 16
+## 6 11 Midsi~ 37.5 40.1 42.7 5.2 5.18 4.9 16
+## 7 12 Compa~ 8.5 13.4 18.3 9.8 9.8 3.3 25
+## 8 13 Compa~ 11.4 11.4 11.4 0 -0.01 3.4 25
+## 9 14 Sporty 13.4 15.1 16.8 3.4 3.38 4.2 19
+57
+## 10 15 Midsi~ 13.4 15.9 18.4 5 5.01 4 21
+## # i 38 more rows
+## # i 1 more variable: MPG.highway <dbl>
+carprices %>% summarise(price = mean(Price))
+## price
+## 1 18.57292
+carprices
+## # A tibble: 48 x 10
+## ...1 Type Min.Price Price Max.Price Range.Price RoughRange gpm100 MPG.city
+## <dbl> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 6 Midsi~ 14.2 15.7 17.3 3.1 3.09 3.8 22
+## 2 7 Large 19.9 20.8 21.7 1.8 1.79 4.2 19
+## 3 8 Large 22.6 23.7 24.9 2.3 2.31 4.9 16
+## 4 9 Midsi~ 26.3 26.3 26.3 0 -0.01 4.3 19
+## 5 10 Large 33 34.7 36.3 3.3 3.3 4.9 16
+## 6 11 Midsi~ 37.5 40.1 42.7 5.2 5.18 4.9 16
+## 7 12 Compa~ 8.5 13.4 18.3 9.8 9.8 3.3 25
+## 8 13 Compa~ 11.4 11.4 11.4 0 -0.01 3.4 25
+## 9 14 Sporty 13.4 15.1 16.8 3.4 3.38 4.2 19
+## 10 15 Midsi~ 13.4 15.9 18.4 5 5.01 4 21
+## # i 38 more rows
+## # i 1 more variable: MPG.highway <dbl>
+ggplot(carprices, mapping = aes(x = Type, y = Price)) +
+geom_bar(stat = 'identity')
+58
+0
+100
+200
+Compact Large Midsize Small Sporty Van
+Type
+Price### Tukey Boxplots
+swiss_df <- swiss %>%
+rownames_to_column('province') %>%
+mutate(catholic = Catholic > 50)
+ggplot(swiss_df, mapping = aes(y = Fertility)) +
+geom_boxplot()
+59
+40
+60
+80
+−0.4 −0.2 0.0 0.2 0.4
+Fertilityggplot(swiss_df, mapping = aes(x = '', y = Fertility)) +
+geom_boxplot(width = 0.25)
+60
+40
+60
+80
+x
+Fertilityggplot(swiss_df, mapping = aes(x = '', y = Fertility)) +
+geom_boxplot(width = 0.25) + coord_flip()
+61
+40 60 80
+Fertility
+xggplot(swiss_df, mapping = aes(x = '', y = Fertility)) +
+geom_boxplot(width = 0.25) + geom_rug(sides = 'l') + geom_jitter() +
+coord_flip()
+62
+40 60 80
+Fertility
+xggplot(swiss_df, mapping = aes(x = catholic, y = Fertility)) +
+geom_boxplot(width = 0.25, outlier.shape = NA) +
+geom_jitter(width = 0.1, size = 0.75)
+63
+40
+60
+80
+FALSE TRUE
+catholic
+Fertilitymorley %>%
+mutate(Expt = as.factor(Expt)) %>%
+ggplot(mapping = aes(x = Expt, y = Speed, fill = Expt)) +
+geom_boxplot(width = 0.25, outlier.shape = NA, varwidth = T) +
+geom_jitter(aes(colour = Expt), alpha = 0.5, width = 0.1, size = 0.75) +
+theme(legend.position = 'none')
+64
+600
+700
+800
+900
+1000
+1 2 3 4 5
+Expt
+SpeedToothGrowth %>%
+mutate(dose = as.factor(dose)) %>%
+ggplot(mapping = aes(x = dose, y = len, colour = supp)) +
+geom_boxplot(outlier.shape = NA, varwidth = T) +
+geom_jitter(position = position_jitterdodge(0.5), size = 0.75)
+65
+10
+20
+30
+0.5 1 2
+dose
+len supp
+OJ
+VC### Scatterplots
+ggplot(weight_df, mapping = aes(x=height, y=weight)) + geom_point()
+66
+60
+90
+120
+140 160 180 200
+height
+weightggplot(weight_df, mapping = aes(x=height, y=weight)) +
+geom_point(size = 0.5, shape='triangle')
+67
+60
+90
+120
+140 160 180 200
+height
+weightggplot(weight_df, mapping = aes(x=height, y=weight, colour = gender)) +
+geom_point(size = 0.5)
+68
+60
+90
+120
+140 160 180 200
+height
+weight gender
+Female
+Maleggplot(weight_df, mapping = aes(x=height, y=weight, colour=gender)) +
+geom_point(size = 0.5) + geom_rug(alpha = 0.5, linewidth = 1/10)
+69
+60
+90
+120
+140 160 180 200
+height
+weight gender
+Female
+Maleggplot(weight_df, mapping = aes(x=height, y=weight, colour=gender)) +
+geom_point(size = 0.5) + geom_rug(alpha = 0.5, size = 1/10)
+## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## i Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+p <- ggplot(weight_df, mapping = aes(x=height, y=weight, colour=gender)) +
+geom_point(size = 0.5)
+ggMarginal(p)
+70
+60
+90
+120
+140 160 180 200
+height
+weight gender
+Female
+Male
+60
+90
+120
+140 160 180 200
+height
+weight gender
+Female
+Maleggplot(swiss_df, mapping = aes(x = Examination, y = Fertility)) +
+geom_point() + geom_smooth()
+## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+71
+40
+60
+80
+10 20 30
+Examination
+Fertilityggplot(swiss_df, mapping = aes(x = Examination, y = Fertility)) +
+geom_point() + geom_smooth(method = 'lm')
+## `geom_smooth()` using formula = 'y ~ x'
+72
+40
+60
+80
+10 20 30
+Examination
+Fertilityggplot(swiss_df, mapping = aes(x = Examination, y = Fertility,
+colour = catholic)) + geom_point()
+73
+40
+60
+80
+10 20 30
+Examination
+Fertility catholic
+FALSE
+TRUEggplot(swiss_df, mapping = aes(x = Examination, y = Fertility,
+colour = catholic)) + geom_point() +
+geom_smooth(method = 'lm', se = F,
+fullrange = T)
+## `geom_smooth()` using formula = 'y ~ x'
+74
+40
+60
+80
+10 20 30
+Examination
+Fertility catholic
+FALSE
+TRUEmidwest %>%
+ggplot(mapping = aes(x = percollege, y = percprof, size = poptotal)) +
+geom_point(alpha = 0.5, colour = 'steelblue')
+75
+0
+5
+10
+15
+20
+10 20 30 40 50
+percollege
+percprof
+poptotal
+1e+06
+2e+06
+3e+06
+4e+06
+5e+06###Facet Plots
+ggplot(titanic_df, mapping = aes(x = passengerClass, fill = survived)) +
+geom_bar(position = 'dodge') + facet_wrap(~sex)
+76
+female male
+1st 2nd 3rd 1st 2nd 3rd
+0
+100
+200
+300
+400
+passengerClass
+count survived
+no
+yessleepstudy_df <- read_csv("C:/Users/bkell/Documents/Data Science Masters Program/DSE5001/sleepstudy.csv"
+## Rows: 180 Columns: 3
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): Subject
+## dbl (2): Reaction, Days
+##
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+ggplot(sleepstudy_df, mapping = aes(x = Days, y = Reaction, colour = Subject)) + geom_point() + g
+facet_wrap(~Subject) + theme_minimal() + theme(legend.position = 'none')
+## `geom_smooth()` using formula = 'y ~ x'
+77
+s370 s371 s372
+s349 s350 s351 s352 s369
+s332 s333 s334 s335 s337
+s308 s309 s310 s330 s331
+0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5
+0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5
+200
+300
+400
+200
+300
+400
+200
+300
+400
+200
+300
+400
+Days
+Reactionggplot(sleepstudy_df, mapping = aes(x = Days, y = Reaction, colour = Subject)) + geom_point() + g
+facet_wrap(~Subject, nrow = 3) + theme_minimal() +
+theme(legend.position = 'none')
+## `geom_smooth()` using formula = 'y ~ x'
+78
+s351 s352 s369 s370 s371 s372
+s333 s334 s335 s337 s349 s350
+s308 s309 s310 s330 s331 s332
+0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5 0.0 2.5 5.0 7.5
+200
+300
+400
+200
+300
+400
+200
+300
+400
+Days
+Reactionweight_df %>%
+filter(race %in% c(1, 2)) %>%
+mutate(young = age < median(age), race = as.factor(race)) %>%
+ggplot(mapping = aes(x = weight, fill = gender)) +
+geom_histogram(binwidth = 10, colour = 'white', position = 'dodge',
+alpha = 0.75) + facet_grid(young ~ race, labeller =
+label_both) + theme(legend.position = 'bottom')
+79
+race: 1 race: 2
+young: FALSE young: TRUE
+30 60 90 120 15030 60 90 120 150
+0
+100
+200
+300
+400
+0
+100
+200
+300
+400
+weight
+count
+gender Female Malert_data <- c(567, 1823, 517, 583, 317, 367, 250, 503,
+317, 567, 583, 517, 650, 567, 450, 350)
+mean(rt_data)
+## [1] 558
+median(rt_data)
+## [1] 517
+var(rt_data)
+## [1] 127933.6
+skewness <- function(x, dof=1){xbar <- mean(x) #function for skewness
+s <- sd(x)
+mean((x - xbar)ˆ3)/sˆ3
+}
+skewness(rt_data)
+## [1] 2.66389
+kurtosis <- function(x){z <- (x - mean(x))/sd(x) #function for kurtosis
+mean(zˆ4)
+}
+kurtosis(rt_data)
+## [1] 9.851725
+80
+c(12, 13, 13, 16, 21, 57) %>%
+stem()
+##
+## The decimal point is 1 digit(s) to the right of the |
+##
+## 1 | 2336
+## 2 | 1
+## 3 |
+## 4 |
+## 5 | 7
+library(aplpack)
+stem.leaf(rt_data, trim.outliers = FALSE, unit=10)
+## 1 | 2: represents 120
+## leaf unit: 10
+## n: 16
+## 1 2 | 5
+## 5 3 | 1156
+## 6 4 | 5
+## (8) 5 | 01166688
+## 2 6 | 5
+## 7 |
+## 8 |
+## 9 |
+## 10 |
+## 11 |
+## 12 |
+## 13 |
+## 14 |
+## 15 |
+## 16 |
+## 17 |
+## 1 18 | 2
+gdp_df <- read_csv('C:/Users/bkell/Documents/Data Science Masters Program/DSE5001/nominal_gdp_per_capita
+## Rows: 192 Columns: 2
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): country
+## dbl (1): gdp
+##
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+#histogram vs boxplot
+gdp_df %>%
+ggplot(aes(x = gdp)) + geom_histogram(col='white', binwidth = 2500)
+81
+0
+10
+20
+30
+40
+0 30000 60000 90000
+gdp
+count#boxplot shows long tail on the right
+ggplot(gdp_df, aes(x = '', y = gdp)) +
+geom_boxplot(outlier.shape = NA) +
+geom_jitter(width = 0.25, size = 0.5, alpha = 0.5) +
+geom_rug(sides = 'l') + coord_flip() +
+theme(aspect.ratio = 1/5) + xlab('')
+82
+0 25000 50000 75000 100000
+gdpgdp_df %>%
+ggplot(aes(x = gdp)) + stat_ecdf()
+83
+0.00
+0.25
+0.50
+0.75
+1.00
+0 25000 50000 75000 100000
+gdp
